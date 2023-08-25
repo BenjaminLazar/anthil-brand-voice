@@ -84,7 +84,7 @@ import streamlit as st
 
 import openai
 
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 openai.api_key = OPENAI_API_KEY
 
 st.title('Anthill Brand Voice')
