@@ -82,6 +82,10 @@ The combined tone emphasizes both the clinical aspects of the medications and th
 
 import streamlit as st
 
+st.set_page_config(
+    layout="wide",  # Use the full screen width
+)
+
 import openai
 
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
@@ -93,8 +97,9 @@ with st.form('form text'):
     key_brand = st.selectbox('Select a brand voice', options=list(tov.keys()))
     key_persona = st.selectbox('Select a persona', options=list(personas.keys()))
     notes = st.text_input('Add some optional ekstra instructions or notes', ' ')
-    txt = st.text_area('Content to Change', '')
-    
+    col1, col2 = st.columns(2)
+    with col1:
+        txt = st.text_area('Content to Change here', ' ', height=800)
     submitted = st.form_submit_button('Change Tone')
     if submitted:
         prompt = f'''
@@ -129,5 +134,5 @@ with st.form('form text'):
                 {"role": "user", "content": prompt},
             ]
         )
-        
-        st.write(response['choices'][0]['message']['content'])
+        with col2:
+            st.write(response['choices'][0]['message']['content'])
