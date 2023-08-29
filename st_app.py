@@ -93,14 +93,36 @@ openai.api_key = OPENAI_API_KEY
 
 st.title('Anthill Brand Voice')
 
+col3, col4 = st.columns(2)
+
+tov_checkbox = st.checkbox('Show Brand Voice Prompt')
+key_brand = st.selectbox('Select a brand voice', options=list(tov.keys()))
+
+if tov_checkbox:
+    tov_prompt = st.text_area(' ', f'{tov[key_brand]}', height = 400)
+else:
+    tov_prompt = tov[key_brand]
+
+persona_checkbox = st.checkbox('Show Persona Prompt')
+key_persona = st.selectbox('Select a persona', options=list(personas.keys()))
+
+if persona_checkbox:
+    persona_prompt = st.text_area(' ', f'{personas[key_persona]}', height = 200)
+else:
+    persona_prompt = personas[key_persona]
+
 with st.form('form text'):
-    key_brand = st.selectbox('Select a brand voice', options=list(tov.keys()))
-    key_persona = st.selectbox('Select a persona', options=list(personas.keys()))
+
+    
     notes = st.text_input('Add some optional ekstra instructions or notes', ' ')
+    
     col1, col2 = st.columns(2)
+    
     with col1:
-        txt = st.text_area('Content to Change here', ' ', height=800)
+        content = st.text_area('Content to Change here', ' ', height=800)
+    
     submitted = st.form_submit_button('Change Tone')
+    
     if submitted:
         prompt = f'''
         You will be provided some 'content to change' that you will rewrite in the style and tone of voice that you will be instructed in. Besides this will you also consider a specific persona that the content is aimed at.
@@ -117,11 +139,11 @@ with st.form('form text'):
         
         Extra notes: {notes}
         
-        'tov instructions': {tov[key_brand]}
+        'tov instructions': {tov_prompt}
         
-        'persone description': {personas[key_persona]}
+        'persone description': {persona_prompt}
         
-        'content to change': "{txt}"
+        'content to change': "{content}"
         
         
         Your task is to rewrite the 'content to change' in the style and tone of voice described in 'tov instructions', and taking into account the persona described in 'persona_description'.
